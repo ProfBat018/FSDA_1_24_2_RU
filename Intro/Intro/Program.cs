@@ -116,3 +116,12 @@ foreach(var userRole in userRoles)
 }
 
 #endregion
+
+
+
+#region Part7 
+
+// Inner Joins in Dapper 
+
+
+#endregion

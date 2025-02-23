@@ -3,6 +3,10 @@
 - Framework vs Library
 - Параметризованные запросы
 - Примеры кода 
+- Non-query команды (ADO.NET)
+- Insert (Dapper)
+- Relationships (Dapper)
+- Dapper Bulk Operations 
 
 [DAPPER PROGRAM](https://materials.itstep.org/content/9268bbe4-bcd5-44a7-bb3c-8adc4fce0860/ru)
 
@@ -95,6 +99,7 @@ Console.WriteLine(user);
 В примере выше мы видим что вместо значения мы передаем параметр `@userName`. 
 Это позволяет нам избежать SQL инъекций. Даже если человек напишет `drop table Users`,
 то это не повлияет на наш запрос. Он попытается найти пользователя с именем `drop table Users`.
+
 
 
 
