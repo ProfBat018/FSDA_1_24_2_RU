@@ -26,13 +26,16 @@ Console.WriteLine("Connected to Database");
 */
 #endregion
 
-var configBuilder = new ConfigurationBuilder();
+#region AuthConnection
+// var configBuilder = new ConfigurationBuilder();
+//
+// configBuilder.AddJsonFile("appsettings.json");
+//
+// var config = configBuilder.Build();
+//
+// var connectionString = config.GetConnectionString("Default");
 
-configBuilder.AddJsonFile("appsettings.json");
-
-var config = configBuilder.Build();
-
-var connectionString = config.GetConnectionString("Default");
+#endregion
 
 #region Part2
 /*
@@ -96,32 +99,143 @@ foreach(var user in res)
 
 #region Part6
 
-var commandString = "select * from Users where userName = @userName;" +
-    "select * from UserRoles where userNameRef = @userName;";
+// var commandString = "select * from Users where userName = @userName;" +
+//     "select * from UserRoles where userNameRef = @userName;";
+//
+// using var connection = new SqlConnection(connectionString);
+// connection.Open();
+//
+// using var multi = connection.QueryMultiple(commandString, new {userName = "emily_clark"});
+//
+// var user = multi.Read<User>().Single();
+//
+// var userRoles = multi.Read<UserRole>();
+//
+// Console.WriteLine(user);
+//
+// foreach(var userRole in userRoles)
+// {
+//     Console.WriteLine(userRole);
+// }
 
-using var connection = new SqlConnection(connectionString);
-connection.Open();
+#endregion
 
-using var multi = connection.QueryMultiple(commandString, new {userName = "emily_clark"});
+#region Part7 
 
-var user = multi.Read<User>().Single();
+// Non-query ADO.NET 
 
-var userRoles = multi.Read<UserRole>();
-
-Console.WriteLine(user);
-
-foreach(var userRole in userRoles)
-{
-    Console.WriteLine(userRole);
-}
+// using var connection = new SqlConnection(connectionString);
+//
+// connection.Open();
+// var sqlQuery = "insert into Roles values(N'Editor');";
+//
+// var command = new SqlCommand(sqlQuery, connection);
+//
+// int ExecutedRows = command.ExecuteNonQuery();
+//
 
 #endregion
 
 
+#region Part8 
 
-#region Part7 
+// Insert Dapper 
 
-// Inner Joins in Dapper 
+// using var connection = new SqlConnection(connectionString);
+//
+// connection.Open();
+//
+// var users = new List<User>()
+// {
+//     new User("Evin_123", "Elvin_1234", "profbat018@gmail.com"),
+//     new User("Ramazan_123", "Ramazan_1234", "ramazan@gmail.com")
+// };
+//
+//
+// var sqlQuery = "insert into Users(userName, password, email) values(@UserName, @Password, @Email);";
+//
+// var affectedRows = connection.Execute(sqlQuery, users);
+//
 
+#endregion
+
+// В связи со сложной структурой примеров мы будет подключаться к базе данных Ecommerce
+
+#region EcommerceConnection
+
+var configBuilder = new ConfigurationBuilder();
+
+configBuilder.AddJsonFile("appsettings.json");
+
+var config = configBuilder.Build();
+
+var connectionString = config.GetConnectionString("Ecommerce");
+
+#endregion
+
+#region Part9 
+//
+// using var connection = new SqlConnection(connectionString);
+// connection.Open();
+//
+// var sqlQuery = """
+//                SELECT 
+//                    C.CategoryID, C.Name, 
+//                    Pc.CategoryID AS ParentCategoryID, Pc.Name 
+//                FROM Categories AS C
+//                INNER JOIN Categories AS Pc ON Pc.CategoryID = C.ParentCategoryID
+//                WHERE C.ParentCategoryID IS NOT NULL;
+//                """;
+//
+// var categories = connection.Query<Category, Category, Category>(
+//     sqlQuery,
+//     (category, parentCategory) =>
+//     {
+//         category.ParentCategory = parentCategory;
+//         return category;
+//     },
+//     splitOn: "ParentCategoryID" // Теперь эта колонка есть в SELECT
+// );
+//
+// foreach (var category in categories)
+// {
+//     Console.WriteLine($"{category.CategoryID}\t {category.Name}\t{category.ParentCategory.Name}");
+// }
+
+#endregion
+
+#region Part10
+
+// many to many
+//
+// using var connection = new SqlConnection(connectionString);
+//
+// connection.Open();
+//
+// var sqlQuery = """
+//                select p.Name, c.Name from ProductCategories
+//                inner join dbo.Products P on P.ProductID = ProductCategories.ProductID
+//                inner join dbo.Categories C on C.CategoryID = ProductCategories.CategoryID; 
+//                """;
+//
+//
+// var productCategories = connection.Query<Product, Category, Product>(
+//     sqlQuery,
+//     (product, category) =>
+//     {
+//         product.Categories.Add(category);
+//         return product;
+//     },
+//     splitOn: "Name"
+// );
+//
+// foreach (var product in productCategories)
+// {
+//     Console.WriteLine($"{product.Name}");
+//     foreach (var category in product.Categories)
+//     {
+//         Console.WriteLine($"\t{category.Name}");
+//     }
+// }
 
 #endregion
