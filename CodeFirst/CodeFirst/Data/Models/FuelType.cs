@@ -11,4 +11,6 @@ public class FuelType
     [Required]
     [MaxLength(50)]
     public string FuelName { get; set; }
+
+    public ICollection<Car> Cars { get; set; }
 }

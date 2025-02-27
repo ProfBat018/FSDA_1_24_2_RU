@@ -21,9 +21,14 @@ public class Car
     
     [ForeignKey("CarType")]
     public int CarTypeId { get; set; }
-    public CarType CarType { get; set; }
+    public virtual CarType CarType { get; set; }
     
     [ForeignKey("FuelType")]
     public int FuelTypeId { get; set; }
-    public FuelType FuelType { get; set; }
+    public virtual FuelType FuelType { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Make}\t{Model}\t{Year}\t{CarType.CarTypeName}\t{FuelType.FuelName}";
+    }
 }

@@ -14,6 +14,8 @@ public class ShowroomContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        // optionsBuilder.UseLazyLoadingProxies();
+        
         var connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()
             .GetConnectionString("Default");
 
