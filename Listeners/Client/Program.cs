@@ -1,43 +1,18 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using System.Text;
+﻿using System.Net.Sockets;
 
-Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+TcpClient client = new("172.20.28.8", 3003);
 
-Console.Write("Enter your username: ");
-byte[] usernameData = Encoding.UTF8.GetBytes(Console.ReadLine());
+Console.WriteLine($"Connected to server: {client.Client.RemoteEndPoint}");
+NetworkStream stream = client.GetStream();
 
-try
+byte[] buffer = new byte[1024];
+
+while (true)
 {
-    IPAddress serverIP = IPAddress.Parse("127.0.0.1");
-    IPEndPoint serverEndPoint = new IPEndPoint(serverIP, 3003);
+    Console.Write("Enter message: ");
+    string message = Console.ReadLine();
 
-    clientSocket.Connect(serverEndPoint);
-    Console.WriteLine("Connected to server");
+    byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
 
-    while (true)
-    {
-        Console.Write("Enter message to send (or 'exit' to quit): ");
-        string message = Console.ReadLine();
-        byte[] data = Encoding.UTF8.GetBytes(message);
-
-        byte[] dataWithUsername = new byte[usernameData.Length + data.Length];
-        
-        Buffer.BlockCopy(usernameData, 0, dataWithUsername, 0, usernameData.Length);
-        Buffer.BlockCopy(data, 0, dataWithUsername, usernameData.Length, data.Length);
-        
-        clientSocket.Send(dataWithUsername);
-        Console.WriteLine("Message sent");
-
-        if (message.ToLower() == "exit")
-        {
-            clientSocket.Shutdown(SocketShutdown.Both);
-            clientSocket.Close();
-            break;
-        }
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error: {ex.Message}");
+    stream.Write(data, 0, data.Length);
 }

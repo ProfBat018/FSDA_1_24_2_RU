@@ -1,0 +1,24 @@
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+Socket serverSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+IPAddress address = IPAddress.Parse("172.20.28.8"); // всегда localhost 
+IPEndPoint endPoint = new(address, 3003);
+
+var buffer = new byte[2048]; // делаю буферный массив для получения данных 
+
+serverSocket.Bind(endPoint);
+serverSocket.Listen();
+
+Console.WriteLine($"Listening on {endPoint.Address}:{endPoint.Port}");
+
+
+while (true)
+{
+    Socket clientSocket = serverSocket.Accept();
+    int bytesRead = clientSocket.Receive(buffer); 
+    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+    Console.WriteLine($"{message}");
+}

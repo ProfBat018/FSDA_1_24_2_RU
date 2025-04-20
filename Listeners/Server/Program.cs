@@ -1,24 +1,24 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
-Socket serverSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+TcpListener server = new TcpListener(IPAddress.Any, 3003);
 
-IPAddress address = IPAddress.Parse("127.0.0.1"); // всегда localhost 
-IPEndPoint endPoint = new(address, 3003);
+server.Start();
+Console.WriteLine($"Server started on {server.Server.RemoteEndPoint}. Waiting for a connection...");
 
-var buffer = new byte[2048]; // делаю буферный массив для получения данных 
+TcpClient client = server.AcceptTcpClient();
 
-serverSocket.Bind(endPoint);
-serverSocket.Listen();
-
-Console.WriteLine($"Listening on {endPoint.Address}:{endPoint.Port}");
-
+Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
 
 while (true)
 {
-    Socket clientSocket = serverSocket.Accept();
-    int bytesRead = clientSocket.Receive(buffer); 
-    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-    Console.WriteLine($"{message}");
+    NetworkStream stream = client.GetStream();
+
+    byte[] buffer = new byte[1024];
+
+    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+    string message = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+    
+    Console.WriteLine($"Received message: {message}");
 }
