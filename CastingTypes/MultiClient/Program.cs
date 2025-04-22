@@ -3,17 +3,16 @@ using System.Net.Sockets;
 using System.Text;
 
 
-int MulticastPort = 5000;
+int MulticastPort = 3003;
 string MulticastGroupAddress = "239.0.0.222";
 
-var localAddress = GetLocalIPAddress();
 
 using var udpClient = new UdpClient();
 
 udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, MulticastPort));
 
-udpClient.JoinMulticastGroup(IPAddress.Parse(MulticastGroupAddress), localAddress);
+udpClient.JoinMulticastGroup(IPAddress.Parse(MulticastGroupAddress));
 
 Console.WriteLine("Multicast Client запущен. Ожидание сообщений...");
 

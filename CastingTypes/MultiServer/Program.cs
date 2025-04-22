@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-int MulticastPort = 5000;
+int MulticastPort = 3003;
 string MulticastGroupAddress = "239.0.0.222";
 
 using var udpClient = new UdpClient();
