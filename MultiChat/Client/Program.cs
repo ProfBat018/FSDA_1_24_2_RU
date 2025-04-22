@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Text;
 
 Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
 Console.Write("Enter your username: ");
 byte[] usernameData = Encoding.UTF8.GetBytes(Console.ReadLine());
 
