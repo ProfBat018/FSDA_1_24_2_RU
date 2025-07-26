@@ -3,6 +3,7 @@ using Auth.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auth.Data.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726160042_Second")]
+    partial class Second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,8 @@ namespace Auth.Data.Migrations
             modelBuilder.Entity("Auth.Data.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -81,9 +85,17 @@ namespace Auth.Data.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("FK_UserRoles_Role")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FK_UserRoles_User")
+                        .HasColumnType("nvarchar(7)");
+
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("FK_UserRoles_Role");
+
+                    b.HasIndex("FK_UserRoles_User");
 
                     b.ToTable("UserRoles");
                 });
@@ -92,15 +104,11 @@ namespace Auth.Data.Migrations
                 {
                     b.HasOne("Auth.Data.Data.Models.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FK_UserRoles_Role");
 
                     b.HasOne("Auth.Data.Data.Models.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FK_UserRoles_User");
 
                     b.Navigation("Role");
 

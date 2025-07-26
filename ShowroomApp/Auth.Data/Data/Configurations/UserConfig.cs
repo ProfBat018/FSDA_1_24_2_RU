@@ -9,8 +9,6 @@ public class UserConfig : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(u => u.Id);
-        var id = builder.Property(u => u.Id);
-        id.HasMaxLength(7);
 
         var name = builder.Property(u => u.Name);
         name.IsRequired();

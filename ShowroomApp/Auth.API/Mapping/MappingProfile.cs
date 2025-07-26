@@ -26,10 +26,9 @@ public class MappingProfile : Profile
 
     private static string ValidatePassword(string password, string confirmPassword)
     {
-        
         var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
         
-        if (passwordPattern != confirmPassword)
+        if (password != confirmPassword)
         {
             throw new ArgumentException("Invalid password");
         }

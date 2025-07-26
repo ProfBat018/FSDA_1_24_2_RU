@@ -1,8 +1,10 @@
 using Auth.API.DTOs;
+using Auth.API.DTOs.Response;
 using Auth.API.Services.Interfaces;
 using Auth.Data.Data;
 using Auth.Data.Data.Models;
 using AutoMapper;
+using static BCrypt.Net.BCrypt;
 
 namespace Auth.API.Services.Classes;
 
@@ -17,19 +19,27 @@ public class AccountService : IAccountService
         _mapper = mapper;
     }
 
-    public async Task RegisterAsync(RegisterRequestDTO request)
-    {
+    public async Task<Result> RegisterAsync(RegisterRequestDTO request)
+    {  
         var mappingRes = _mapper.Map<RegisterRequestDTO, User>(request);
-
-        if (mappingRes == null)
-        {
-            throw new ArgumentException("Invalid request");
-        }
-
-       mappingRes.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        
+        mappingRes.Password = HashPassword(request.Password);
        
-       _context.Users.Add(mappingRes);
+        _context.Users.Add(mappingRes);
 
-       await _context.SaveChangesAsync();
+        await AssignRoleToUser(mappingRes.Id);
+
+        await _context.SaveChangesAsync();
+       
+        return Result.Success("User Successfully registered");
+    }
+
+    public async Task<Result> AssignRoleToUser(string userId, string roleName = "AppUser")
+    {
+        var role = _context.Roles.First(r => r.Name == roleName);
+
+        _context.UserRoles.Add(new() { UserId = userId, RoleId = role.Id });
+        
+        return Result.Success();
     }
 }
