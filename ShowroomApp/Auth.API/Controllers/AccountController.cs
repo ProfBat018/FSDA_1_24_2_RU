@@ -20,7 +20,6 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequestDTO request)
     {
         var res = await _accountService.RegisterAsync(request);
-
         return Ok(res);
     }
     

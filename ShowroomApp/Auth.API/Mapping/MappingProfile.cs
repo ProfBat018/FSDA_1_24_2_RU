@@ -9,7 +9,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<RegisterRequestDTO, User>()
+            CreateMap<RegisterRequestDTO, User>()
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => ValidateEmail(src.Email)))
             .ForMember(dest => dest.Password, opt => opt.MapFrom(src => ValidatePassword(src.Password, src.ConfirmPassword)))
             .ForMember(dest => dest.Id, opt => opt.Ignore()) 

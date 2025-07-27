@@ -400,3 +400,7 @@ var res = context.People.Where(p => p.Age > 35).Select(p => new
 у вас еще нет никаких данных. 
 
 В переменную res, записываете query, то есть сам sql запрос. Этот запрос не выолняется сразу. Он выполнится тогда, когда вы обратитесь к этой переменной. 
+
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmMzdhYmM0MC1jODMyLTQ5Y2UtOWQ5YS1mNmMzNzVlNzgzMTYiLCJhdWQiOlsibXMubXkuZ292LmF6Il0sImlzcyI6ImF1dGgubXkuZ292LmF6IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImp0aSI6ImQzYTRkM2QwLTUyOTItNDA1MS1hZDE2LTY2MzE2ZTg5OWQ4MCIsImV4cCI6MTc1MzYwNzAyMn0.2-0q1GX4Q5uhTX7OXdi-P4Gjy4GbTw7kl-t7i6SenXo
+
+"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmMzdhYmM0MC1jODMyLTQ5Y2UtOWQ5YS1mNmMzNzVlNzgzMTYiLCJhdWQiOlsibXMubXkuZ292LmF6Il0sImlzcyI6ImF1dGgubXkuZ292LmF6IiwidHlwZSI6ImFjY2Vzc190b2tlbiIsImp0aSI6Ijc2MjNmY2FiLTIwMmQtNDg5MS1iYTA2LWE2ZDViNDI0YWIzMyIsImV4cCI6MTc1MzYwNzE5NH0.sIH-wZ6WTKeImosHhDkjQAJ1c7sC1nv-T9llM41w_AU"

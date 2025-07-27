@@ -1,4 +1,7 @@
+using Auth.API.DTOs;
+using Auth.API.Services.Interfaces;
 using Auth.Data.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.API.Controllers;
@@ -7,9 +10,25 @@ namespace Auth.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    [HttpPost("Login")]
-    public async Task<IActionResult> LoginAsync()
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        throw new NotImplementedException();
+        _authService = authService;
+    }
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDTO request)
+    {
+        var res = await _authService.LoginAsync(request);
+
+        return Ok(res);
+    }
+
+    [Authorize(Roles = "AppAdmin")]
+    [HttpGet("Test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("success");
     }
 }
