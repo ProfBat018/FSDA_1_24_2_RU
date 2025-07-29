@@ -29,10 +29,12 @@ public class AccountController : ControllerBase
         throw new NotImplementedException();
     }
     
+    [Authorize]
     [HttpPost("Email/Confirm")]
     public async Task<IActionResult> ConfirmEmailAsync()
     {
-        throw new NotImplementedException();
+        _accountService.ConfirmEmailAsync();
     }
+    
     
 }

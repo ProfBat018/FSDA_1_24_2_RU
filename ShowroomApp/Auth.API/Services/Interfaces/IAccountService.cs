@@ -5,6 +5,7 @@ namespace Auth.API.Services.Interfaces;
 
 public interface IAccountService
 {
+    public Task<Result> ConfirmEmailAsync(string email);
     public Task<Result> RegisterAsync(RegisterRequestDTO request);
     public Task<Result> AssignRoleToUser(string userId, string roleName = "appUser");
 }

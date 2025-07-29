@@ -22,7 +22,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAuthService, AuthService>();
-
+        services.AddScoped<IRoleService, RoleService>();
+        
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddAuthentication(options =>
@@ -45,7 +46,11 @@ public static class ApplicationServiceExtensions
                 };
             });
 
-        services.AddAuthorization();
+        services.AddAuthorization(ops =>
+        {
+            ops.AddPolicy("AdminPolicy", policyBuilder => policyBuilder.RequireRole("AppAdmin", "AppSuperAdmin"));
+            ops.AddPolicy("UserPolicy", policyBuilder => policyBuilder.RequireRole("AppUser", "AppAdmin"));
+        });
 
         return services;
     }

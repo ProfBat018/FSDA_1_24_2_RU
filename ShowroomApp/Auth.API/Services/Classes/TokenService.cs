@@ -44,4 +44,26 @@ public class TokenService : ITokenService
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
     }
+
+    public async Task<string> CreateEmailConfirmationTokenAsync(User user)
+    {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+            };
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:EmailKey").Value));
+
+            var signingCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            var securityToken = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(3),
+                issuer: _configuration.GetSection("JWT:Issuer").Value,
+                audience: _configuration.GetSection("JWT:Audience").Value,
+                signingCredentials: signingCred);
+
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
+            return tokenString;
+    }
 }
