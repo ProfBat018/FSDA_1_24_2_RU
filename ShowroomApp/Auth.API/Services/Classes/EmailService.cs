@@ -19,7 +19,8 @@ public class EmailService
         _client = new()
         {
             Host = _configuration["Email:Host"],
-            Port = 587
+            Port = 587,
+            EnableSsl = true
         };
         _client.Credentials = new NetworkCredential()
         {
@@ -28,10 +29,18 @@ public class EmailService
         };
     }
 
-    
     public async Task SendEmailAsync(string email, string username, string subject, string content)
     {
-        
-        
+        var message = new MailMessage()
+        {
+            From = new MailAddress(_configuration["Email:From"]),
+            Subject = subject,
+            Body = content,
+            IsBodyHtml = true
+        };
+
+        message.To.Add(new MailAddress(email));
+
+        await _client.SendMailAsync(message);
     }
 }

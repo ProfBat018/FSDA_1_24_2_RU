@@ -23,6 +23,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddSingleton<EmailService>();
         
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
